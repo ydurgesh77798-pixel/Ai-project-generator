@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>AI Project Generator | Smart SaaS Platform</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar" id="sidebar">
+            <div class="sidebar-header">
+                <i class="fas fa-robot"></i>
+                <span>AI Generator</span>
+            </div>
+            <nav class="sidebar-nav">
+                <button class="nav-item" data-view="generate">
+                    <i class="fas fa-magic"></i>
+                    <span>Generate</span>
+                </button>
+                <button class="nav-item" data-view="history">
+                    <i class="fas fa-history"></i>
+                    <span>History</span>
+                </button>
+                <button class="nav-item" data-view="pricing">
+                    <i class="fas fa-tag"></i>
+                    <span>Pricing</span>
+                </button>
+                <button class="nav-item" data-view="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>Settings</span>
+                </button>
+                <button class="nav-item logout-btn" id="logoutBtn">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>Logout</span>
+                </button>
+            </nav>
+            <div class="sidebar-footer">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="sidebarUserName">User</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Header -->
+            <header class="glass-header">
+                <button class="mobile-menu-toggle" id="mobileMenuToggle">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <div class="logo">AI Project Generator</div>
+                <div class="header-actions">
+                    <button class="header-btn ghost" id="pricingHeaderBtn">
+                        <i class="fas fa-gem"></i> Pricing
+                    </button>
+                    <button class="header-btn primary" id="loginHeaderBtn">Login</button>
+                    <button class="header-btn outline" id="signupHeaderBtn">Sign Up</button>
+                    <div class="profile-icon hidden" id="profileIcon">
+                        <i class="fas fa-user-astronaut"></i>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dynamic Views -->
+            <div id="appViews">
+                <!-- Auth Section -->
+                <div id="authSection" class="auth-wrapper">
+                    <div class="auth-container">
+                        <!-- Login Card -->
+                        <div class="glass-card auth-card" id="loginCard">
+                            <h2>Welcome Back</h2>
+                            <p class="subtitle">Login to your AI studio</p>
+                            <form id="loginForm">
+                                <div class="input-field">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="email" id="loginEmail" placeholder="Email" required>
+                                </div>
+                                <div class="input-field">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="loginPassword" placeholder="Password" required>
+                                </div>
+                                <button type="submit" class="btn-primary btn-block">Login</button>
+                                <div class="auth-links">
+                                    <a href="#" id="forgotPasswordLink">Forgot password?</a>
+                                    <a href="#" id="showSignupLink">Create account</a>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Signup Card -->
+                        <div class="glass-card auth-card hidden" id="signupCard">
+                            <h2>Create Account</h2>
+                            <p class="subtitle">Start your AI journey</p>
+                            <form id="signupForm">
+                                <div class="input-field">
+                                    <i class="fas fa-user"></i>
+                                    <input type="text" id="signupName" placeholder="Full Name" required>
+                                </div>
+                                <div class="input-field">
+                                    <i class="fas fa-envelope"></i>
+                                    <input type="email" id="signupEmail" placeholder="Email" required>
+                                </div>
+                                <div class="input-field">
+                                    <i class="fas fa-lock"></i>
+                                    <input type="password" id="signupPassword" placeholder="Password (min 6)" required>
+                                </div>
+                                <button type="submit" class="btn-primary btn-block">Sign Up</button>
+                                <div class="auth-links">
+                                    <a href="#" id="showLoginLink">Already have an account? Login</a>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Generate View -->
+                <div id="generateView" class="view-container hidden">
+                    <div class="dashboard-grid">
+                        <div class="glass-card input-card">
+                            <h3><i class="fas fa-pencil-alt"></i> Project Description</h3>
+                            <textarea id="projectInput" rows="6" placeholder="Describe your project idea, requirements, or content..."></textarea>
+                            <div class="input-actions">
+                                <button class="icon-btn" id="voiceInputBtn" title="Voice Input">
+                                    <i class="fas fa-microphone"></i> Voice
+                                </button>
+                                <button class="icon-btn" id="fileUploadBtn" title="Upload .txt">
+                                    <i class="fas fa-upload"></i> Upload
+                                </button>
+                                <input type="file" id="txtFileInput" accept=".txt" style="display: none">
+                            </div>
+                        </div>
+
+                        <div class="glass-card settings-card">
+                            <h3><i class="fas fa-cog"></i> Configuration</h3>
+                            <div class="form-group">
+                                <label>Software Format</label>
+                                <select id="softwareType" class="glass-select">
+                                    <option value="Microsoft Word">Microsoft Word</option>
+                                    <option value="Microsoft Excel">Microsoft Excel</option>
+                                    <option value="Microsoft PowerPoint">Microsoft PowerPoint</option>
+                                    <option value="Google Docs">Google Docs</option>
+                                    <option value="Google Sheets">Google Sheets</option>
+                                    <option value="LibreOffice">LibreOffice</option>
+                                    <option value="QuickBooks">QuickBooks</option>
+                                    <option value="Notepad">Notepad</option>
+                                </select>
+                            </div>
+                            <div class="plan-indicator" id="planIndicator">
+                                <i class="fas fa-star"></i>
+                                <span>Free Plan - 500 char limit</span>
+                            </div>
+                            <button class="btn-primary btn-block" id="generateBtn">
+                                <i class="fas fa-bolt"></i> Generate
+                            </button>
+                        </div>
+
+                        <div class="glass-card output-card">
+                            <h3><i class="fas fa-code"></i> AI Generated Output</h3>
+                            <div id="outputContent" class="output-content">
+                                <p class="placeholder">✨ Your AI-generated content will appear here</p>
+                            </div>
+                            <div class="output-buttons hidden" id="outputButtons">
+                                <button class="secondary-btn" id="copyOutputBtn">
+                                    <i class="far fa-copy"></i> Copy
+                                </button>
+                                <button class="secondary-btn" id="downloadOutputBtn">
+                                    <i class="fas fa-download"></i> Download
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- History View -->
+                <div id="historyView" class="view-container hidden">
+                    <div class="glass-card full-width">
+                        <h2><i class="fas fa-history"></i> Generation History</h2>
+                        <div id="historyList" class="history-list">
+                            <div class="loading-spinner">Loading...</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pricing View -->
+                <div id="pricingView" class="view-container hidden">
+                    <div class="pricing-grid">
+                        <div class="pricing-card">
+                            <h3>Free</h3>
+                            <div class="price">₹0<span>/month</span></div>
+                            <ul>
+                                <li>500 character limit</li>
+                                <li>Basic AI generation</li>
+                                <li>7-day history</li>
+                            </ul>
+                            <button class="btn-secondary" disabled>Current Plan</button>
+                        </div>
+                        <div class="pricing-card featured">
+                            <div class="popular-badge">POPULAR</div>
+                            <h3>Monthly Pro</h3>
+                            <div class="price"><span class="old-price">₹499</span> ₹99<span>/month</span></div>
+                            <ul>
+                                <li>Unlimited input</li>
+                                <li>Priority AI processing</li>
+                                <li>Unlimited history</li>
+                                <li>Premium support</li>
+                            </ul>
+                            <button class="btn-primary upgrade-btn" data-plan="monthly">Upgrade Now</button>
+                        </div>
+                        <div class="pricing-card">
+                            <h3>6 Months</h3>
+                            <div class="price"><span class="old-price">₹999</span> ₹199<span>/6 months</span></div>
+                            <ul>
+                                <li>All Pro features</li>
+                                <li>Save 40%</li>
+                                <li>Priority support</li>
+                            </ul>
+                            <button class="btn-primary upgrade-btn" data-plan="6months">Upgrade</button>
+                        </div>
+                        <div class="pricing-card">
+                            <h3>Lifetime</h3>
+                            <div class="price"><span class="old-price">₹1199</span> ₹299<span>/lifetime</span></div>
+                            <ul>
+                                <li>Lifetime access</li>
+                                <li>All future updates</li>
+                                <li>VIP support</li>
+                            </ul>
+                            <button class="btn-primary upgrade-btn" data-plan="lifetime">Limited Offer</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Settings View -->
+                <div id="settingsView" class="view-container hidden">
+                    <div class="glass-card settings-card">
+                        <h2><i class="fas fa-user-cog"></i> Account Settings</h2>
+                        <div class="settings-item">
+                            <label>Current Plan</label>
+                            <div class="settings-value">
+                                <span id="settingsPlan">Free</span>
+                                <button class="tiny-btn" id="settingsUpgradeBtn">Upgrade</button>
+                            </div>
+                        </div>
+                        <div class="settings-item">
+                            <label>Email</label>
+                            <span id="settingsEmail">user@example.com</span>
+                        </div>
+                        <div class="settings-item">
+                            <label>Change Password</label>
+                            <input type="password" id="newPassword" placeholder="New password">
+                            <button class="secondary-btn" id="changePasswordBtn">Update</button>
+                        </div>
+                        <hr>
+                        <button class="danger-btn" id="settingsLogoutBtn">
+                            <i class="fas fa-sign-out-alt"></i> Logout
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <div id="toastContainer" class="toast-container"></div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
